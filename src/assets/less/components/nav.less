@@ -1,0 +1,43 @@
+// main: header.less
+.nav {
+  ul {
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: center;
+    height: 100%;
+    list-style: none;
+
+    li {
+      display: block;
+      height: 100%;
+      margin-right: 50px;
+
+      &:last-of-type {
+        margin-right: 0;
+      }
+
+      .nav-link {
+        display: grid;
+        align-content: center;
+        height: 100%;
+        padding: 0 18px;
+        color: @white;
+        text-decoration: none;
+        border-radius: 14px;
+        transition: all linear .3s;
+
+        column-gap: 15px;
+        grid-template-columns: auto 1fr;
+
+
+        &.active {
+          background: @bluePurpleGradient;
+        }
+
+        &:hover {
+          background-color: @darkMediumGray;
+        }
+      }
+    }
+  }
+}

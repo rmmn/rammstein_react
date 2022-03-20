@@ -1,0 +1,56 @@
+// main: ../style.less
+
+.header {
+  position: fixed;
+  top: 24px;
+  right: 24px;
+  left: 24px;
+  z-index: 999;
+  max-width: 1440px;
+  height: 91px;
+  margin: 0 auto;
+  background-color: @darkHighGray;
+  box-shadow: 0 25px 40px rgba(0, 0, 0, .05);
+  border-radius: 24px;
+  transition: all linear .3s;
+
+  &.fullwidth {
+    top: 0;
+    right: 0;
+    left: 0;
+    max-width: 100%;
+    border-radius: 0;
+  }
+
+  .container {
+    @import "logo.less";
+    @import "nav.less";
+    display: grid;
+    align-content: center;
+    max-width: 1344px;
+    height: 100%;
+    padding: 0 48px;
+    margin: 0 auto;
+
+    column-gap: 110px;
+    grid-template-columns: 60px 1fr 60px;
+
+    .search {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 60px;
+      height: 100%;
+      padding: 0;
+      text-align: center;
+      background: transparent;
+      box-shadow: none;
+      border-radius: 14px;
+      transition: all linear .3s;
+
+      &:hover {
+        background-color: @darkMediumGray;
+      }
+    }
+  }
+}

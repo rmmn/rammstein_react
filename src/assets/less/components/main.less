@@ -1,0 +1,75 @@
+// main: ../style.less
+main {
+  @import "banner.less";
+  max-width: 1440px;
+  margin: 0 auto;
+
+  .section {
+    position: relative;
+    padding: 50px 0;
+
+    .scroll-buttons {
+      position: absolute;
+      top: 50%;
+      z-index: 2;
+      width: 100%;
+      transform: translateY(-50%);
+
+      .left,
+      .right {
+        position: absolute;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 40px;
+        height: 40px;
+        padding: 0 !important;
+        border-radius: 100px;
+        transition: all linear .3s;
+      }
+
+      .left {
+        left: -20px;
+
+        .icon {
+          margin-left: 20px;
+        }
+
+        &:hover {
+          left: -23px;
+        }
+      }
+
+      .right {
+        right: -20px;
+
+        .icon {
+          margin-right: 20px;
+        }
+
+        &:hover {
+          right: -23px;
+        }
+      }
+    }
+
+    .section-title {
+      width: 100%;
+      margin-bottom: 20px;
+      color: @white;
+
+      .title {
+        font-size: 23px;
+        font-weight: 900;
+        text-align: center;
+        text-transform: uppercase;
+      }
+    }
+
+    .section-list {
+      @import "item.less";
+      height: 190px;
+      white-space: nowrap;
+    }
+  }
+}

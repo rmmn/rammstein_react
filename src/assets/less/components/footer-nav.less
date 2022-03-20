@@ -1,0 +1,49 @@
+// main: footer.less
+
+.footer-nav {
+    ul {
+        display: flex;
+        flex-flow: row nowrap;
+        justify-content: center;
+        list-style: none;
+        height: 68px;
+        margin-top: 40px;
+
+        li {
+            display: block;
+            height: 100%;
+            margin-right: 30px;
+
+            &:last-of-type {
+                margin-right: 0;
+            }
+
+            .nav-link {
+                display: grid;
+                align-content: center;
+                padding: 12px 18px;
+                color: @white;
+                text-decoration: none;
+                border-radius: 14px;
+                transition: all linear .3s;
+
+                font-size: 15px;
+                column-gap: 15px;
+                grid-template-columns: auto 1fr;
+
+                .icon {
+                    font-size: 15px;
+                }
+
+
+                &.active {
+                    background: @darkMediumGray;
+                }
+
+                &:hover {
+                    background-color: @darkMediumGray;
+                }
+            }
+        }
+    }
+}

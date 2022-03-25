@@ -12,6 +12,7 @@ import MenuItem from '../components/MenuItem';
 import MobileHeader from '../components/MobileHeader';
 import logo from '../assets/img/logo-light.png'
 import SearchForm from '../components/SearchForm';
+import Single from './Single';
 
 function App() {
   return (
@@ -26,7 +27,7 @@ function App() {
       <MobileHeader logo={logo} />
       <Routes>
         <Route path="/" element={<Home />} />
-        <Route path="/test/:id" element={<Home test='test' />} />
+        <Route path="/post/:id" element={<Single />} />
       </Routes>
 
       <footer className="footer">

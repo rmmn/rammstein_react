@@ -1,47 +1,119 @@
 import SectionItems from '../components/SectionItems';
 import Article from '../components/Article';
-import { useParams } from 'react-router-dom';
+import { useEffect, useState } from 'react';
+import { PostType } from '../interfaces/PostTypeEnum';
+import Banner from '../components/Banner';
+import { useIsMounted } from '../hooks/useIsMounted';
+import ArticleSkeleton from '../components/skeleton/ArticleSkeleton';
+import SectionItemsSkeleton from '../components/skeleton/SectionItemsSkeleton';
 
 const Home = props => {
-    let { id } = useParams();
-    return (
-        <div className="root">
+    const [state, setState] = useState({
+        data: null,
+        loading: true
+    });
+    const isMounted = useIsMounted();
+    let data = null;
 
+    useEffect((): void => {
+        fetch('/data.json', {
+            method: 'GET',
+            mode: 'no-cors',
+            cache: 'no-cache',
+            credentials: 'same-origin',
+            referrerPolicy: 'no-referrer',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        }).then(rq => {
+            return rq.json();
+        }).then(rs => {
+            if (isMounted.current) {
+                data = rs.sections;
+                setState({
+                    data: data,
+                    loading: true
+                });
+            }
+        }).finally(() => {
+            const load = setTimeout(() => {
+                setState({
+                    data: data,
+                    loading: false
+                });
+                clearTimeout(load)
+            }, 2000)
+        });
+    }, []);
 
-            <main role="main">
-
-                <section className="banner">
-                    <img className="bg-image" src="https://via.placeholder.com/1920/1080" draggable="false" alt="" />
-                    <div className="overlay"></div>
-                    <div className="banner-container">
-
-                    </div>
-                </section>
-
-                <SectionItems
-                    title={props.test + id}
-                    articles={new Array(6).fill(null).map((_, index) => {
-                        const key = index + 1;
-                        return <Article id={index} key={key} />
-                    })}
-                />
-                <SectionItems
-                    title="Новости"
-                    articles={new Array(6).fill(null).map((_, index) => {
-                        const key = index + 1;
-                        return <Article id={index} key={key} />
-                    })}
-                />
-                <SectionItems
-                    title="Новости"
-                    articles={new Array(6).fill(null).map((_, index) => {
-                        const key = index + 1;
-                        return <Article id={index} key={key} />
-                    })}
-                />
-            </main>
-        </div >
-    )
+    if (!state.loading) {
+        return (
+            <div className="root">
+                <main role="main">
+                    <Banner is-page-banner={false} data={null} />
+                    {
+                        state.data.map((section) => {
+                            return (
+                                <SectionItems
+                                    title={section.title}
+                                    key={section.sectionID}
+                                    slug={section.section_slug}
+                                    articles={
+                                        section.items.map((item, index) => {
+                                            item.type = (section.section_slug === "news" ? PostType.News : section.section_slug === "biographies" ? PostType.Bio : PostType.Disc);
+                                            const key = index + 1;
+                                            return <Article id={item.id} data={item} key={key} />
+                                        })
+                                    }
+                                />
+                            )
+                        })
+                    }
+                </main>
+            </div>
+        )
+    } else {
+        return (
+            <div className="root">
+                <main role="main">
+                    <Banner is-page-banner={false} data={null} />
+                    {
+                        <SectionItemsSkeleton
+                            title="Новости"
+                            articles={
+                                new Array(3).fill(null).map((item, index) => {
+                                    const key = index + 1;
+                                    return <ArticleSkeleton id={key} key={key} />
+                                })
+                            }
+                        />
+                    }
+                    {
+                        <SectionItemsSkeleton
+                            title="Биографии"
+                            articles={
+                                new Array(3).fill(null).map((item, index) => {
+                                    const key = index + 1;
+                                    return <ArticleSkeleton id={key} key={key} />
+                                })
+                            }
+                        />
+                    }
+                    {
+                        <SectionItemsSkeleton
+                            title="Дискография"
+                            articles={
+                                new Array(3).fill(null).map((item, index) => {
+                                    const key = index + 1;
+                                    return <ArticleSkeleton id={key} key={key} />
+                                })
+                            }
+                        />
+                    }
+                </main>
+            </div>
+        )
+    }
 };
 
 export default Home;

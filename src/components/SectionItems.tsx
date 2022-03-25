@@ -2,7 +2,6 @@ import SimpleBar from 'simplebar-react';
 import 'simplebar/dist/simplebar.min.css';
 
 const SectionItems = props => {
-    const [isLeftClicked, isRightClicked] = [false, false];
     const newsHideButtons = () => {
         const section = document.querySelectorAll('.section')
 
@@ -13,6 +12,22 @@ const SectionItems = props => {
 
             leftButton.dataset.key = key.toString();
             rightButton.dataset.key = key.toString();
+
+            if (sc.clientWidth >= scrollableContent.scrollWidth) {
+                leftButton.style.display = 'none';
+                rightButton.style.display = 'none';
+            } else {
+                rightButton.style.display = 'flex';
+            }
+
+            window.addEventListener('resize', () => {
+                if (sc.clientWidth >= scrollableContent.scrollWidth) {
+                    leftButton.style.display = 'none';
+                    rightButton.style.display = 'none';
+                } else {
+                    rightButton.style.display = 'flex';
+                }
+            })
 
             if (scrollableContent.scrollLeft > 0) {
                 leftButton.style.display = 'flex';
@@ -63,6 +78,7 @@ const SectionItems = props => {
             })
 
             scrollableContent.addEventListener('scroll', e => {
+
                 //left
                 if (scrollableContent.scrollLeft > 0) {
                     leftButton.style.display = 'flex';
@@ -85,7 +101,7 @@ const SectionItems = props => {
                 }
 
                 // right
-                if (scrollableContent.scrollLeft == (scrollableContent.scrollWidth - scrollableContent.clientWidth)) {
+                if (scrollableContent.scrollLeft === (scrollableContent.scrollWidth - scrollableContent.clientWidth)) {
                     rightButton.animate([{
                         opacity: 1
                     }, {
@@ -106,17 +122,19 @@ const SectionItems = props => {
                 }
             });
 
-            scrollableContent.addEventListener('mouseover', e => {
+            scrollableContent.addEventListener('mouseenter', e => {
                 scrollableContent.addEventListener('wheel', (w: WheelEvent) => {
 
                     if (scrollableContent.scrollLeft > 0) {
-                        w.preventDefault()
-                        scrollableContent.scrollLeft += (w.deltaY * 2);
+                        scrollableContent.scrollTo({
+                            left: scrollableContent.scrollLeft + (w.deltaY * 4),
+                            behavior: 'smooth'
+                        })
                     }
 
-                    if (scrollableContent.scrollLeft != (scrollableContent.scrollWidth - scrollableContent.clientWidth)) {
+                    if (scrollableContent.scrollLeft !== (scrollableContent.scrollWidth - scrollableContent.clientWidth)) {
                         w.preventDefault()
-                        scrollableContent.scrollLeft += (w.deltaY * 2);
+                        scrollableContent.scrollLeft += (w.deltaY * 4);
                     }
 
                 })
@@ -141,7 +159,7 @@ const SectionItems = props => {
                 item = content.querySelectorAll('.item')[0] as HTMLDivElement,
                 scrollLeft = scrollableContent.scrollLeft;
 
-            if (btnDirection == 'left' && btn.dataset.key == key.toString()) {
+            if (btnDirection === 'left' && btn.dataset.key === key.toString()) {
                 if (scrollLeft > 0) {
 
                     scrollableContent.scrollTo({
@@ -149,7 +167,7 @@ const SectionItems = props => {
                         behavior: 'smooth'
                     })
                 }
-            } else if (btnDirection == 'right' && btn.dataset.key == key.toString()) {
+            } else if (btnDirection === 'right' && btn.dataset.key === key.toString()) {
                 if (scrollLeft < content.clientWidth) {
                     scrollableContent.scrollTo({
                         left: scrollLeft + item.clientWidth,
@@ -164,13 +182,16 @@ const SectionItems = props => {
         <section className="section news" onLoad={() => newsHideButtons()} >
             <div className="section-title">
                 <h2 className="title">{props.title}</h2>
+                <button className="button read-more secondary">
+                    <i className="icon right"></i>
+                </button>
             </div>
 
             <div className="scroll-buttons">
-                <button className="left button" data-direction="left" onClick={newsScrollClick}>
+                <button className="left secondary button" data-direction="left" onClick={newsScrollClick}>
                     <i className="icon left"></i>
                 </button>
-                <button className="right button" data-direction="right" onClick={newsScrollClick}>
+                <button className="right secondary button" data-direction="right" onClick={newsScrollClick}>
                     <i className="icon right"></i>
                 </button>
             </div>

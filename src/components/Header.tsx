@@ -1,5 +1,4 @@
 import { Link } from "react-router-dom";
-import MenuItem from "./MenuItem";
 
 
 const Header = (props: any) => {
@@ -17,7 +16,7 @@ const Header = (props: any) => {
         <header className="header">
             <div className="container">
                 <Link to="/" className="logo">
-                    <img src={props.logoSrc} alt="RB logo" role="img" />
+                    <img src={props.logoSrc} alt="RB logo" />
                 </Link>
 
                 <nav className="nav" role="navigation">

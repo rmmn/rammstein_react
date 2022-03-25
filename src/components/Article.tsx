@@ -1,15 +1,33 @@
+import FastAverageColor from "fast-average-color";
 import { Link } from "react-router-dom";
 
 const Article = props => {
+
+    const getAverageColor = (e) => {
+        const fac = new FastAverageColor(),
+            item = document.querySelector(`.item[data-key='${props.id}']`) as HTMLElement,
+            image = e.target as HTMLImageElement,
+            overlay = document.querySelector('.post-cover>.overlay') as HTMLDivElement,
+            coverContent = document.querySelector('.post-cover-content') as HTMLDivElement;
+
+        fac.getColorAsync(image).then(color => {
+            //image.style.boxShadow = `0 5px 17px 4px ${color.rgba.replace('1)', '.9)')}`;
+            item.style.backgroundColor = color.rgba;
+
+            if (color.isLight)
+                item.classList.add('is-light')
+            else
+                item.classList.remove('is-light')
+        })
+    }
     return (
-        <article className="item">
-            <Link to={"/test/" + props.id}>
-                <img className="item-image" src="https://via.placeholder.com/750/750" alt="" />
+        <article className="item" data-key={props.id}>
+            <Link to={"/post/" + props.id + "?type=" + props.data.type}>
+                <img className="item-image" src={props.data.image} alt="" onLoad={getAverageColor} />
                 <div className="item-content">
-                    <h3 className="item-title">Boring Girls</h3>
-                    <p className="item-published">Sara Taylor</p>
-                    <p className="item-excerpt">Amazing, very interesting novel by Sara Taylor. Must read for everyone!
-                    </p>
+                    <h3 className="item-title">{props.data.title}</h3>
+                    <p className="item-published">{props.data.author}</p>
+                    <p className="item-excerpt">{props.data.description}</p>
                 </div>
             </Link>
         </article>

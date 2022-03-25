@@ -11,6 +11,12 @@
   box-shadow: 0 25px 40px rgba(0, 0, 0, .06);
   border-radius: 32px;
 
+  &.is-light {
+    a {
+      color: @black;
+    }
+  }
+
   &:last-of-type {
     margin-right: 0;
   }
@@ -46,23 +52,32 @@
       .item-title {
         display: block;
         margin-bottom: 4px;
-        font-size: 18px;
+        font-size: 15px;
+        line-height: 18px;
         white-space: normal;
+        max-height: 53px;
+        overflow: hidden;
       }
 
       .item-published {
         display: block;
         margin-bottom: 13px;
         font-size: 12px;
+        line-height: 18px;
         white-space: normal;
+        max-height: 18px;
+        overflow: hidden;
         opacity: .6;
       }
 
       .item-excerpt {
         display: block;
         font-size: 12px;
+        line-height: 18px;
         white-space: normal;
         opacity: .4;
+        max-height: 53px;
+        overflow: hidden;
       }
     }
   }
